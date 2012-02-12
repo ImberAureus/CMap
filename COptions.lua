@@ -1,6 +1,6 @@
 local _G = getfenv(0)
 local textureOffset = 0
-presetNames = { "Blue Rune Circles", "Blue Rune Diamond", "Burning Sun", "Stargate", "Simple Square", "Ruins", "Emerald Portal", "Shamanism",}
+presetNames = { "Blue Rune Circles", "Blue Rune Diamond", "Burning Sun", "Stargate", "Simple Square", "Ruins", "Emerald Portal", "Shamanism", "LL Corner Rounded", }
 shapeNames = { "Round", "Square", "Diamond", "Hexagon", "Octagon", "Heart", "Snowflake", "LL Corner Rounded", "LR Corner Rounded", "UL Corner Rounded", "UR Corner Rounded",}
 
 local function print(msg)
@@ -29,13 +29,11 @@ end
 
 function CInitiateMenu()
 	Minimap:SetPoint("CENTER", UIParent, "BOTTOMLEFT", xMiddle, yMiddle)
-	for i=1, 11 do
-		if CMDB.shape == shapeNames[i] then
-			UIDropDownMenu_SetSelectedID(CShapeDropDown, i)
-		end
-	end
+	CTextureOptionFrame:Show()
 	CTexture_Update()
+	CMinimapOptionFrame:Show()
 	CMinimap_Update()
+	CVariableOptionFrame:Show()
 	CVariable_Update()
 end
 
@@ -63,6 +61,11 @@ function CTexture_Update()
 end
 
 function CMinimap_Update()
+	for i=1, 11 do
+		if CMDB.shape == shapeNames[i] then
+			UIDropDownMenu_SetSelectedID(CShapeDropDown, i)
+		end
+	end
 end
 
 function CVariable_Update()
@@ -71,7 +74,7 @@ end
 
 function CPresetDropDown_Initialize()
 	local info;
-	for i=1, 8 do
+	for i=1, 9 do
 		info = {}
 		info.text = presetNames[i]
 		info.func = CPresetDropDownButton_OnClick
@@ -89,7 +92,6 @@ function CPresetDropDown_OnLoad()
 end
 
 function CPresetDropDownButton_OnClick()
-	UIDropDownMenu_SetSelectedID(CPresetDropDown, this:GetID())
 	CApplyPreset(presetNames[this:GetID()])
 end
 
@@ -112,9 +114,9 @@ function CShapeDropDown_OnLoad()
 end
 
 function CShapeDropDownButton_OnClick()
-	UIDropDownMenu_SetSelectedID(CShapeDropDown, this:GetID())
 	CMDB.shape = shapeNames[this:GetID()]
 	CApplyShape(CMDB.shape)
+	CMinimap_Update()
 end
 
 function CTextureButton_OnClick(button)

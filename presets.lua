@@ -1,4 +1,19 @@
-borderPresets = {				
+borderPresets = {
+	["LL Corner Rounded"] = {
+		["borders"] = {
+			{
+				["a"] = 1,
+				["r"] = 0,
+				["name"] = "texture1",
+				["b"] = 0,
+				["scale"] = 1.5,
+				["disableRotation"] = true,
+				["g"] = 0,
+				["texture"] = "Interface\\AddOns\\CMap\\shapes\\topright",
+			},
+		},
+		["shape"] = "LL Corner Rounded"
+	},	
 	["Blue Rune Circles"] = {
 		["borders"] = {
 			{

@@ -6,13 +6,14 @@ local cos = math.cos
 local rad = math.rad
 borderTextures = {
 	["AURARUNE256.BLP"] = "SPELLS\\AURARUNE256.BLP",
-	["AuraRune256b.blp"] = "SPELLS\\AuraRune256b.blp"
+	["AuraRune256b.blp"] = "SPELLS\\AuraRune256b.blp",
 	["AuraRune_A.blp"] = "SPELLS\\AuraRune_A.blp",
 	["AuraRune_B.blp"] = "SPELLS\\AuraRune_B.blp",
 	["Elite"] = "Interface\\TargetingFrame\\UI-TargetingFrame-Elite",
 	["GENERICGLOW5.BLP"] = "PARTICLES\\GENERICGLOW5.BLP",
 	["GENERICGLOW64.BLP"] = "SPELLS\\GENERICGLOW64.BLP",
 	["gradientCircle.blp"] = "Interface\\GLUES\\MODELS\\UI_Tauren\\gradientCircle.blp",
+	["Nature_Rune_128.blp"] = "SPELLS\\Nature_Rune_128.blp",
 	["Rare"] = "Interface\\TargetingFrame\\UI-TargetingFrame-Rare",
 	["ShamanStoneAir.blp"] = "World\\GENERIC\\PASSIVEDOODADS\\ShamanStone\\ShamanStoneAir.blp",
 	["SHAMANSTONEEARTH.blp"] = "World\\GENERIC\\PASSIVEDOODADS\\ShamanStone\\SHAMANSTONEEARTH.blp",
@@ -21,8 +22,8 @@ borderTextures = {
 	["Shockwave4.blp"] = "SPELLS\\Shockwave4.blp",
 	["Shockwave_blue.blp"] = "World\\ENVIRONMENT\\DOODAD\\GENERALDOODADS\\ELEMENTALRIFTS\\Shockwave_blue.blp",
 	["SHOCKWAVE_INVERTGREY.BLP"] = "SPELLS\\SHOCKWAVE_INVERTGREY.BLP",
+	["TREANTLEAVES.BLP"] = "SPELLS\\TREANTLEAVES.BLP",
 	["T_VFX_HERO_CIRCLE.BLP"] = "SPELLS\\T_VFX_HERO_CIRCLE.BLP",
-	--[""] = "",
 }
 
 function CCreateBorder(t)
@@ -44,6 +45,9 @@ function CCreateBorder(t)
 	CTextures[t.name] = t.name
 	if t.rotSpeed and t.rotSpeed ~= 0 and not t.disableRotation then
 		CRotateTextures[t.name] = t.rotSpeed
+	end
+	if t.rotatation then
+		CRotateTexture(texture, t.rotation)
 	end
 end
 

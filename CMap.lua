@@ -66,7 +66,7 @@ function CMap_OnEvent()
 		if not CMDB.userPresets then
 			CMDB.userPresets = {}
 		end
-		print(CMDB.shape.." lol")
+		--print(CMDB.shape.." lol")
 		CreateFrame("Frame", "CMinimapBackdrop", Minimap)
 		CMinimapBackdrop:SetFrameStrata("BACKGROUND")
 		CMinimapBackdrop:SetFrameLevel(CMinimapBackdrop:GetFrameLevel() - 1)

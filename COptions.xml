@@ -41,7 +41,7 @@
 		</HighlightTexture>
 	</Button>
 	
-	<Frame name="CTextureOptionFrame" frameStrata="LOW" hidden="false" enableMouse="true" parent="UIParent">
+	<Frame name="CTextureOptionFrame" frameStrata="LOW" hidden="true" enableMouse="true" parent="UIParent">
 		<Size>
 			<AbsDimension x="350" y="460" />
 		</Size>
@@ -180,7 +180,7 @@
 		</Frames>
 	</Frame>
 	
-	<Frame name="CMinimapOptionFrame" frameStrata="LOW" hidden="false" enableMouse="true" parent="UIParent">
+	<Frame name="CMinimapOptionFrame" frameStrata="LOW" hidden="true" enableMouse="true" parent="UIParent">
 		<Size>
 			<AbsDimension x="700" y="200" />
 		</Size>
@@ -223,6 +223,11 @@
 								<Anchor point="TOPLEFT">
 									<Offset>
 										<AbsDimension x="15" y="3"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="-30" y="-2"/>
 									</Offset>
 								</Anchor>
 							</Anchors>
@@ -288,7 +293,7 @@
 		</Frames>
 	</Frame>
 	
-	<Frame name="CVariableOptionFrame" frameStrata="LOW" hidden="false" enableMouse="true" parent="UIParent">
+	<Frame name="CVariableOptionFrame" frameStrata="LOW" hidden="true" enableMouse="true" parent="UIParent">
 		<Size>
 			<AbsDimension x="350" y="460" />
 		</Size>
