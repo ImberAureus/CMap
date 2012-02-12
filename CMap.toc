@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: CMap
+## Notes: Backport of SexyMap
+## Author: Excomunicate of feenix Warsong
+## SavedVariables: CMDB
+
+CMap.xml
+COptions.xml
