@@ -1,5 +1,7 @@
 local _G = getfenv(0)
 local textureOffset = 0
+local minimapX
+local minimapY
 presetNames = { "Blue Rune Circles", "Blue Rune Diamond", "Burning Sun", "Stargate", "Simple Square", "Ruins", "Emerald Portal", "Shamanism", "LL Corner Rounded", }
 shapeNames = { "Round", "Square", "Diamond", "Hexagon", "Octagon", "Heart", "Snowflake", "LL Corner Rounded", "LR Corner Rounded", "UL Corner Rounded", "UR Corner Rounded",}
 
@@ -28,13 +30,23 @@ function CApplyPreset(preset)
 end
 
 function CInitiateMenu()
+	minimapX, minimapY = Minimap:GetCenter()
 	Minimap:SetPoint("CENTER", UIParent, "BOTTOMLEFT", xMiddle, yMiddle)
 	CTextureOptionFrame:Show()
 	CTexture_Update()
 	CMinimapOptionFrame:Show()
 	CMinimap_Update()
-	CVariableOptionFrame:Show()
 	CVariable_Update()
+	CMinimapOptionFrame.menuState = 1
+end
+
+function CHideMenu()
+	Minimap:SetPoint("CENTER", UIParent, "BOTTOMLEFT", minimapX, minimapY)
+	CTextureOptionFrame.selectedTexture = nil
+	CTextureOptionFrame:Hide()
+	CMinimapOptionFrame:Hide()
+	CVariableOptionFrame:Hide()
+	CMinimapOptionFrame.menuState = 0
 end
 
 function CTexture_Update()
@@ -69,7 +81,11 @@ function CMinimap_Update()
 end
 
 function CVariable_Update()
-	
+	if not CTextureOptionFrame.selectedTexture then
+		CVariableOptionFrame:Hide()
+	else
+		CVariableOptionFrame:Show()
+	end
 end
 
 function CPresetDropDown_Initialize()

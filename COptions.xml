@@ -290,6 +290,23 @@
 					</OnLeave>
 				</Scripts>
 			</Frame>
+			<Button name="CMenuCloseButton" inherits="UIPanelButtonTemplate" text="Close">
+				<Size>
+					<AbsDimension x="75" y="21"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" relativeTo="CMinimapOptionFrame" relativePoint="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-20" y="20"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						CHideMenu()
+					</OnClick>
+				</Scripts>
+			</Button>
 		</Frames>
 	</Frame>
 	
