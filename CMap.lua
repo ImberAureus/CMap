@@ -73,10 +73,13 @@ function CMap_OnEvent()
 		CMinimapBackdrop:SetPoint("CENTER", Minimap, "CENTER")
 		CMinimapBackdrop:SetWidth(Minimap:GetWidth())
 		CMinimapBackdrop:SetHeight(Minimap:GetHeight())
-		CInitiateMenu()
+		--CInitiateMenu()
 		CHideAnnoyingStuff()
 		CLoadArtwork()
 		ToggleFramerate()
+		CMinimapOptionFrame.menuState = 0
+		SlashCmdList["CMAP"] = CMap_SlashCmdHandler
+		SLASH_CMAP1 = "/cm"
 	end
 end
 
@@ -87,6 +90,14 @@ function CMap_OnUpdate()
 			CRotateTexture(_G[k], v * timeElapsed)
 		end
 		timeElapsed = 0
+	end
+end
+
+function CMap_SlashCmdHandler(msg)
+	if CMinimapOptionFrame.menuState == 0 then
+		CInitiateMenu()
+	else
+		CHideMenu()
 	end
 end
 
