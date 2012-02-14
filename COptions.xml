@@ -41,6 +41,129 @@
 		</HighlightTexture>
 	</Button>
 	
+	<Button name="CMenuButtonTemplate" inherits="UIPanelButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="75" y="21"/>
+		</Size>
+	</Button>
+	
+	<Slider name="CHorizontalSliderTemplate" orientation="HORIZONTAL" virtual="true" enableMouse="true">
+		<Size>
+			<AbsDimension x="128" y="17"/>
+		</Size>
+		<HitRectInsets>
+			<AbsInset left="0" right="0" top="-10" bottom="-10"/>
+		</HitRectInsets>
+		<Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="8"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="8"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="3" right="3" top="6" bottom="6"/>
+			</BackgroundInsets>
+		</Backdrop>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontNormalSmall">
+					<Anchors>
+						<Anchor point="BOTTOM" relativePoint="TOP"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentLow" inherits="GameFontHighlightSmall" text="LOW">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="2" y="3"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentHigh" inherits="GameFontHighlightSmall" text="HIGH">
+					<Anchors>
+						<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="-2" y="3"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+			<Size>
+				<AbsDimension x="32" y="32"/>
+			</Size>
+		</ThumbTexture>
+	</Slider>
+	
+	<Slider name="CVerticalSliderTemplate" orientation="VERTICAL" virtual="true" enableMouse="true">
+		<Size>
+			<AbsDimension x="128" y="17"/>
+		</Size>
+		<HitRectInsets>
+			<AbsInset left="0" right="0" top="-10" bottom="-10"/>
+		</HitRectInsets>
+		<Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="8"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="8"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="3" right="3" top="6" bottom="6"/>
+			</BackgroundInsets>
+		</Backdrop>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontNormalSmall">
+					<Anchors>
+						<Anchor point="BOTTOM" relativePoint="TOP"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentLow" inherits="GameFontHighlightSmall" text="LOW">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="2" y="3"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentHigh" inherits="GameFontHighlightSmall" text="HIGH">
+					<Anchors>
+						<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="-2" y="3"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Vertical">
+			<Size>
+				<AbsDimension x="32" y="32"/>
+			</Size>
+		</ThumbTexture>
+	</Slider>
+	
+	<Button name="GameMenuButtonCMap" parent="GameMenuFrame" inherits="GameMenuButtonTemplate" text="CMap">
+		<Scripts>
+			<OnLoad>
+				GameMenu_AddButton(this)
+			</OnLoad>
+			<OnClick>
+				PlaySound("igMainMenuOption")
+				HideUIPanel(GameMenuFrame)
+				CInitiateMenu()
+			</OnClick>
+		</Scripts>
+	</Button>
+	
 	<Frame name="CTextureOptionFrame" frameStrata="LOW" hidden="true" enableMouse="true" parent="UIParent">
 		<Size>
 			<AbsDimension x="350" y="460" />
@@ -251,9 +374,9 @@
 			</Frame>
 			<Frame name="CShapeDropDown" inherits="UIDropDownMenuTemplate" id="2">
 				<Anchors>
-					<Anchor point="TOPLEFT">
+					<Anchor point="TOPLEFT" relativeTo="CPresetDropDown" relativePoint="TOPRIGHT">
 						<Offset>
-							<AbsDimension x="150" y="-15"/>
+							<AbsDimension x="50" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -290,10 +413,7 @@
 					</OnLeave>
 				</Scripts>
 			</Frame>
-			<Button name="CMenuCloseButton" inherits="UIPanelButtonTemplate" text="Close">
-				<Size>
-					<AbsDimension x="75" y="21"/>
-				</Size>
+			<Button name="CMenuCloseButton" inherits="CMenuButtonTemplate" text="Close">
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT" relativeTo="CMinimapOptionFrame" relativePoint="BOTTOMRIGHT">
 						<Offset>
@@ -303,6 +423,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
+						PlaySound("igMainMenuContinue")
 						CHideMenu()
 					</OnClick>
 				</Scripts>
@@ -337,5 +458,25 @@
 				NotImportant_OnLoad()
 			</OnLoad>
 		</Scripts>
+		<Frames>
+			<Slider name="CVariableSlider1" inherits="CHorizontalSliderTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="CVariableOptionFrame" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="50" y="-50"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Slider>
+			<Slider name="CVariableSlider2" inherits="CHorizontalSliderTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="CVariableSlider1" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="-50"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Slider>
+		</Frames>
 	</Frame>
 </Ui>

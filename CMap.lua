@@ -77,7 +77,6 @@ function CMap_OnEvent()
 		CHideAnnoyingStuff()
 		CLoadArtwork()
 		ToggleFramerate()
-		CMinimapOptionFrame.menuState = 0
 		SlashCmdList["CMAP"] = CMap_SlashCmdHandler
 		SLASH_CMAP1 = "/cm"
 	end
@@ -94,7 +93,7 @@ function CMap_OnUpdate()
 end
 
 function CMap_SlashCmdHandler(msg)
-	if CMinimapOptionFrame.menuState == 0 then
+	if not CMinimapOptionFrame.menuState then
 		CInitiateMenu()
 	else
 		CHideMenu()

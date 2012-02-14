@@ -2,8 +2,16 @@ local _G = getfenv(0)
 local textureOffset = 0
 local minimapX
 local minimapY
+local getn = table.getn
 presetNames = { "Blue Rune Circles", "Blue Rune Diamond", "Burning Sun", "Stargate", "Simple Square", "Ruins", "Emerald Portal", "Shamanism", "LL Corner Rounded", }
 shapeNames = { "Round", "Square", "Diamond", "Hexagon", "Octagon", "Heart", "Snowflake", "LL Corner Rounded", "LR Corner Rounded", "UL Corner Rounded", "UR Corner Rounded",}
+
+variableOptionSliders = {
+	{ text = "Rotation Speed", func = "CRotSpeedChanged", value = "rotSpeed", minValue = -64, maxValue = 64, valueStep = 1 },
+	{ text = "Scale", func = "CScaleChanged", value = "scale", minValue = 0.1, maxValue = 4, valueStep = 0.01 },
+	--{ text = "Scale", func = "CScaleChanged", value = "scale", minValue = 0.1, maxValue = 4, valueStep = 0.01 },
+	
+}
 
 local function print(msg)
 	if msg and msg ~= "" then
@@ -37,7 +45,7 @@ function CInitiateMenu()
 	CMinimapOptionFrame:Show()
 	CMinimap_Update()
 	CVariable_Update()
-	CMinimapOptionFrame.menuState = 1
+	CMinimapOptionFrame.menuState = true
 end
 
 function CHideMenu()
@@ -46,7 +54,7 @@ function CHideMenu()
 	CTextureOptionFrame:Hide()
 	CMinimapOptionFrame:Hide()
 	CVariableOptionFrame:Hide()
-	CMinimapOptionFrame.menuState = 0
+	CMinimapOptionFrame.menuState = false
 end
 
 function CTexture_Update()
@@ -73,28 +81,55 @@ function CTexture_Update()
 end
 
 function CMinimap_Update()
-	for i=1, 11 do
-		if CMDB.shape == shapeNames[i] then
-			UIDropDownMenu_SetSelectedID(CShapeDropDown, i)
-		end
-	end
+	UIDropDownMenu_SetSelectedValue(CShapeDropDown, CMDB.shape)
 end
 
 function CVariable_Update()
 	if not CTextureOptionFrame.selectedTexture then
 		CVariableOptionFrame:Hide()
+		return
 	else
 		CVariableOptionFrame:Show()
+	end
+	local texture = CTextureOptionFrame.selectedTexture
+	local button
+	local slider
+	local string
+	local thumb
+	local high
+	local low
+	for i,v in ipairs(variableOptionSliders) do
+		slider = _G["CVariableSlider"..i]
+		string = _G["CVariableSlider"..i.."Text"]
+		thumb = _G["CVariableSlider"..i.."Thumb"]
+		high = _G["CVariableSlider"..i.."High"]
+		low = _G["CVariableSlider"..i.."Low"]
+		
+		if slider.disabled then
+			CDisableSlider(slider)
+		else
+			CEnableSlider(slider)
+		end
+		
+		slider:SetMinMaxValues(v.minValue, v.maxValue)
+		slider:SetValueStep(v.valueStep)
+		slider:SetValue(CMDB.borders[texture][v.value] or 0)
+		slider:SetScript("OnValueChanged", _G[v.func])
+		string:SetText(v.text)
+		high:SetText(v.maxValue)
+		low:SetText(v.minValue)
+		
+		
 	end
 end
 
 function CPresetDropDown_Initialize()
 	local info;
-	for i=1, 9 do
+	for i=1, getn(presetNames) do
 		info = {}
 		info.text = presetNames[i]
 		info.func = CPresetDropDownButton_OnClick
-		info.id = i
+		info.value = presetNames[i]
 		info.notCheckable = true
 		UIDropDownMenu_AddButton(info)
 	end
@@ -108,16 +143,16 @@ function CPresetDropDown_OnLoad()
 end
 
 function CPresetDropDownButton_OnClick()
-	CApplyPreset(presetNames[this:GetID()])
+	CApplyPreset(this.value)
 end
 
 function CShapeDropDown_Initialize()
 	local info;
-	for i=1, 11 do
+	for i=1, getn(shapeNames) do
 		info = {}
 		info.text = shapeNames[i]
 		info.func = CShapeDropDownButton_OnClick
-		info.id = i
+		info.value = shapeNames[i]
 		UIDropDownMenu_AddButton(info)
 	end
 end
@@ -130,7 +165,7 @@ function CShapeDropDown_OnLoad()
 end
 
 function CShapeDropDownButton_OnClick()
-	CMDB.shape = shapeNames[this:GetID()]
+	CMDB.shape = this.value
 	CApplyShape(CMDB.shape)
 	CMinimap_Update()
 end
@@ -140,4 +175,47 @@ function CTextureButton_OnClick(button)
 	CTextureOptionFrame.selectedTexture = id
 	CTexture_Update()
 	CVariable_Update()
+end
+
+function CRotSpeedChanged()
+	local i = CTextureOptionFrame.selectedTexture
+	CMDB.borders[i].rotSpeed = this:GetValue()
+	CCreateBorder(CMDB.borders[i])
+end
+
+function CScaleChanged()
+	local i = CTextureOptionFrame.selectedTexture
+	CMDB.borders[i].scale = this:GetValue()
+	CCreateBorder(CMDB.borders[i])
+end
+
+function CDisableSlider(slider)
+	local name = slider:GetName();
+	_G[name.."Thumb"]:Hide();
+	_G[name.."Text"]:SetVertexColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b);
+	_G[name.."Low"]:SetVertexColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b);
+	_G[name.."High"]:SetVertexColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b);
+end
+
+function CEnableSlider(slider)
+	local name = slider:GetName();
+	_G[name.."Thumb"]:Show();
+	_G[name.."Text"]:SetVertexColor(NORMAL_FONT_COLOR.r , NORMAL_FONT_COLOR.g , NORMAL_FONT_COLOR.b);
+	_G[name.."Low"]:SetVertexColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
+	_G[name.."High"]:SetVertexColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
+end
+
+function GameMenu_AddButton(button)
+	if GameMenu_InsertAfter == nil then
+		GameMenu_InsertAfter = GameMenuButtonMacros
+	end
+	if GameMenu_InsertBefore == nil then
+		GameMenu_InsertBefore = GameMenuButtonLogout
+	end
+
+	button:ClearAllPoints()
+	button:SetPoint( "TOP", GameMenu_InsertAfter:GetName(), "BOTTOM", 0, -1 )
+	GameMenu_InsertBefore:SetPoint( "TOP", button:GetName(), "BOTTOM", 0, -1 )
+	GameMenu_InsertAfter = button
+	GameMenuFrame:SetHeight( GameMenuFrame:GetHeight() + button:GetHeight() + 2 )
 end
