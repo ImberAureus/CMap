@@ -39,7 +39,7 @@ function destroyTable(t)
 end
 
 function CMap_OnLoad()
-	print("[CMap] loaded")
+	print("[CMap] loaded. Type '/cm' to open the menu.")
 	this:SetScript("OnEvent", CMap_OnEvent)
 	this:SetScript("OnUpdate", CMap_OnUpdate)
 	this:RegisterEvent("PLAYER_ENTERING_WORLD")
